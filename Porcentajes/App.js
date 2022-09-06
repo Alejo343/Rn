@@ -1,11 +1,15 @@
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import React, {useState} from 'react';
+import Card from './src/components/Card.js';
+import objects from './src/components/objects.js';
 
 export default function App() {
   const [number1, setNumber1] = useState();
   const [number2, setNumber2] = useState();
   const [total, setTotal] = useState();
-  
+
+  const [calculator1, setCalculator1] = useState(objects.calculator_1);
+
   const onSubmit = () => {
     if (number1 && number2) {
       setTotal((number1*number2)/100);
@@ -53,31 +57,13 @@ export default function App() {
             }}>
              {total ? total : 0}
           </Text>
-          {/* <TextInput
-            style={styles.TextGenInput}
-            editable={false}
-            placeholder="20"
-            onChangeText={total}
-            // value=""${total}""
-          /> */}
         </View>
 
-        <Button title="Enviar" onPress={onSubmit}>
-          Hi
-        </Button>
+        <Button title="Calcular" onPress={onSubmit} />
       </View>
 
       {/* calculadora 2 */}
-      <View style={styles.BOX}>
-        <View style={styles.BoxTit}>
-          <Text style={styles.TexTit}>Calculadora 2</Text>
-        </View>
-        <View style={styles.BoxDesc}>
-          <Text style={styles.TextDesc}>
-            Calcular el total conociendo un porcentaje.
-          </Text>
-        </View>
-      </View>
+      <Card calculator={calculator1} setCalculator={setCalculator1} />
     </View>
   );
 }
