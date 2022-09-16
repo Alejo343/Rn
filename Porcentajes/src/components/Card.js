@@ -1,52 +1,49 @@
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 
 export default function Card(props) {
-  const {calculator, setCalculator} = props;
+  const {calculator, setCalculator, onSubmit} = props;
 
   return (
     <View style={styles.BOX}>
       <View style={styles.BoxTit}>
-        <Text style={styles.TexTit}>
-          {calculator.title}
-        </Text>
+        <Text style={styles.TexTit}>{calculator.title}</Text>
       </View>
 
       <View style={styles.BoxDesc}>
-        <Text style={styles.TextDesc}>
-          {calculator.description}
-        </Text>
+        <Text style={styles.TextDesc}>{calculator.description}</Text>
       </View>
 
       <View style={styles.BoxCalcu}>
         <Text style={styles.TextGen}>{calculator.textDescription[0]}</Text>
+
         <TextInput
           style={styles.TextGenInput}
           keyboardType={'numeric'}
           placeholder="20"
-          // onChange={e => setNumber1(e.nativeEvent.text)}
+          onChange={e =>
+            setCalculator({...calculator, input_A: e.nativeEvent.text})
+          }
         />
+
         <Text style={styles.TextGen}>{calculator.textDescription[1]}</Text>
         <TextInput
           style={styles.TextGenInput}
           keyboardType={'numeric'}
-          placeholder="100"
-          // onChange={e => setNumber2(e.nativeEvent.text)}
+          placeholder=""
+          onChange={e =>
+            setCalculator({...calculator, input_B: e.nativeEvent.text})
+          }
         />
-        <Text style={styles.TextGen}>{calculator.textDescription[2]}</Text>
-        <Text
-          style={{
-            fontSize: 27,
-            borderWidth: 1,
-            borderRadius: 5,
-            borderColor: 'grey',
-            paddingHorizontal: 5,
-          }}>
-          {/* {total ? total : 0} */}
-        </Text>
-      </View>
 
-      <Button title="Enviar" />
+        <Text style={styles.TextGen}>{calculator.textDescription[2]}</Text>
+
+        <Text style={styles.result}>
+          {calculator.total ? calculator.total : 0}
+        </Text>
+
+        <Text style={styles.TextGen}>{calculator.textDescription[3]}</Text>
+      </View>
     </View>
   );
 }
@@ -101,5 +98,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'grey',
     borderRadius: 5,
+  },
+  result: {
+    fontSize: 27,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'grey',
+    paddingHorizontal: 5,
   },
 });

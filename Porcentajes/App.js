@@ -1,69 +1,86 @@
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Card from './src/components/Card.js';
 import objects from './src/components/objects.js';
+// import { operationB } from "./src/components/operaciones.js";
 
 export default function App() {
-  const [number1, setNumber1] = useState();
-  const [number2, setNumber2] = useState();
-  const [total, setTotal] = useState();
-
   const [calculator1, setCalculator1] = useState(objects.calculator_1);
+  const [calculator2, setCalculator2] = useState(objects.calculator_2);
+  const [calculator3, setCalculator3] = useState(objects.calculator_3);
 
-  const onSubmit = () => {
-    if (number1 && number2) {
-      setTotal((number1*number2)/100);
+  let inputs = [
+    calculator1.input_A,
+    calculator1.input_B,
+    calculator2.input_A,
+    calculator2.input_B,
+    calculator3.input_A,
+    calculator3.input_B,
+  ];
+
+  // const isEmpty = Object.keys(calcualtion1).length === 0;
+  // console.log(calculator1);
+
+  useEffect(() => {
+    calcualtion1();
+    calcualtion2(calculator2, setCalculator2, 0);
+    calcualtion2(calculator3, setCalculator3, 1);
+  }, inputs);
+
+  // operacion calculadora 1
+  const calcualtion1 = () => {
+    let result;
+
+    if (
+      Object.keys(calculator1.input_A).length !== 0 &&
+      Object.keys(calculator1.input_B).length !== 0
+    ) {
+      result = (calculator1.input_A * calculator1.input_B) / 100;
+    } else {
+      result = '0';
     }
+    console.log("hola");
+
+    setCalculator1({...calculator1, total: result});
+  };
+
+  // operacion calculadora 2 y 3
+  const calcualtion2 = (calculator, setCalculator, num) => {
+    let result;
+
+    if (num == 0) {
+      if (
+        Object.keys(calculator.input_A).length !== 0 &&
+        Object.keys(calculator.input_B).length !== 0
+      ) {
+        result = (calculator.input_B * 100) / calculator.input_A;
+      } else {
+        result = 0;
+      }
+    } else {
+      if (
+        Object.keys(calculator.input_A).length !== 0 &&
+        Object.keys(calculator.input_B).length !== 0
+      ) {
+        result = (calculator.input_B * 100) / calculator.input_A;
+      } else {
+        result = 0;
+      }
+    }
+
+    setCalculator({...calculator, total: result});
   };
 
   return (
     <View style={styles.all}>
       {/* calculadora 1 */}
-      <View style={styles.BOX}>
-        <View style={styles.BoxTit}>
-          <Text style={styles.TexTit}>Calculadora 1</Text>
-        </View>
-
-        <View style={styles.BoxDesc}>
-          <Text style={styles.TextDesc}>
-            Calcular el porcentaje de una cantidad dada.
-          </Text>
-        </View>
-
-        <View style={styles.BoxCalcu}>
-          <Text style={styles.TextGen}>El </Text>
-          <TextInput
-            style={styles.TextGenInput}
-            keyboardType={'numeric'}
-            placeholder="20"
-            onChange={e => setNumber1(e.nativeEvent.text)}
-          />
-          <Text style={styles.TextGen}> % </Text>
-          <Text style={styles.TextGen}>de </Text>
-          <TextInput
-            style={styles.TextGenInput}
-            keyboardType={'numeric'}
-            placeholder="100"
-            onChange={e => setNumber2(e.nativeEvent.text)}
-          />
-          <Text style={styles.TextGen}> es </Text>
-          <Text
-            style={{
-              fontSize: 27,
-              borderWidth: 1,
-              borderRadius: 5,
-              borderColor: 'grey',
-              paddingHorizontal: 5,
-            }}>
-             {total ? total : 0}
-          </Text>
-        </View>
-
-        <Button title="Calcular" onPress={onSubmit} />
-      </View>
+      <Card calculator={calculator1} setCalculator={setCalculator1} />
 
       {/* calculadora 2 */}
-      <Card calculator={calculator1} setCalculator={setCalculator1} />
+      <Card calculator={calculator2} setCalculator={setCalculator2} />
+
+      {/* calculadora 3 */}
+      <Card calculator={calculator3} setCalculator={setCalculator3} />
     </View>
   );
 }
@@ -71,52 +88,5 @@ export default function App() {
 const styles = StyleSheet.create({
   all: {
     margin: 5,
-  },
-  BOX: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 5,
-  },
-  BoxTit: {
-    borderTopEndRadius: 5,
-    borderTopStartRadius: 5,
-    borderBottomWidth: 1,
-    backgroundColor: 'rgba(227,227,240,1.00)',
-  },
-  TexTit: {
-    textAlign: 'center',
-    fontSize: 25,
-    fontWeight: 'normal',
-    color: 'black',
-  },
-  BoxDesc: {
-    margin: 5,
-  },
-  TextGen: {
-    fontSize: 27,
-    // padding: 5,
-  },
-  BoxCalcu: {
-    // backgroundColor: 'red',
-    flexWrap: 'wrap',
-    fontSize: 27,
-    margin: 2,
-    paddingBottom: 5,
-    textAlign: 'center',
-    flexDirection: 'row',
-  },
-  TextDesc: {
-    fontSize: 19,
-  },
-  TextGenInput: {
-    // borderWidth: 2,
-    fontSize: 27,
-    paddingVertical: 0,
-    paddingHorizontal: 8,
-    margin: 0,
-    borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 5,
   },
 });
